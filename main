@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import random
 import os
@@ -307,31 +309,41 @@ def game():
     pygame.quit()
 def main():
     draw_window()
-    for option in options:
-        if option.rect.collidepoint(pygame.mouse.get_pos()):
-            option.hovered = True
-        else:
-            option.hovered = False
-        option.draw()
-    pygame.display.update()
+
     menu=True
     num=False
     global rand
     rand=False
-    while menu:
-        if options[0].rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            num=True
-            menu=False
-        elif options[1].rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            rand=True
-            menu=False
-        else:
-            menu=True
-    if rand:
-        set_random()
-        rand=False
-    if num:
-        pass
+    run=True
+    while run:
+        for option in options:
+            if option.rect.collidepoint(pygame.mouse.get_pos()):
+                option.hovered = True
+            else:
+                option.hovered = False
+            option.draw()
+        pygame.display.update()
+        while menu:
+            if (options[0].rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0])==True:
+                num=True
+                menu=False
+                run=False
+            elif (options[1].rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0])==True:
+                rand=True
+                menu=False
+                run=False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+
+        if rand:
+            set_random()
+            rand=False
+        if num:
+            pass
 
     popdict()
     pygame.display.update()
